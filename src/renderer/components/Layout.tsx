@@ -14,9 +14,6 @@ import {
   DownOutlined,
   LoginOutlined,
   FolderOpenOutlined,
-  MinusOutlined,
-  CloseOutlined,
-  BorderOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { useEmbyStore } from '../stores/embyStore';
@@ -247,19 +244,6 @@ const Layout: React.FC = () => {
 
   const isPlayerPage = location.pathname.startsWith('/player/');
 
-  // 添加窗口控制函数
-  const handleMinimize = () => {
-    window.electron?.minimize();
-  };
-  
-  const handleMaximize = () => {
-    window.electron?.maximize();
-  };
-  
-  const handleClose = () => {
-    window.electron?.close();
-  };
-
   return (
     <AntLayout className="main-layout">
       <Sider
@@ -303,19 +287,9 @@ const Layout: React.FC = () => {
         )}
       </Sider>
       <AntLayout>
-        <Header className={`main-header ${isPlayerPage ? 'player-header' : ''}`}>
-          {isPlayerPage && (
-            <Button
-              icon={<ArrowLeftOutlined />}
-              onClick={() => navigate(-1)}
-              className="back-button"
-            >
-              返回
-            </Button>
-          )}
-          
+        <Header className="main-header">
           <div className="header-center">
-            {!isPlayerPage && <SearchBar />}
+            <SearchBar />
           </div>
           
           <div className="header-right">
@@ -342,13 +316,6 @@ const Layout: React.FC = () => {
                 登录
               </Button>
             )}
-            
-            {/* 窗口控制按钮 */}
-            <div className="window-controls">
-              <Button type="text" icon={<MinusOutlined />} onClick={handleMinimize} />
-              <Button type="text" icon={<BorderOutlined />} onClick={handleMaximize} />
-              <Button type="text" danger icon={<CloseOutlined />} onClick={handleClose} />
-            </div>
           </div>
         </Header>
         

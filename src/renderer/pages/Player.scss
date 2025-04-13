@@ -5,43 +5,18 @@
   flex-direction: column;
   height: 100vh;
   width: 100%;
+  max-width: 100%; /* 确保不会超出视口宽度 */
   background-color: #000;
-  overflow: hidden;
+  overflow-y: auto; /* 允许垂直滚动 */
+  overflow-x: hidden; /* 防止水平溢出 */
   position: relative;
+  scrollbar-width: none; /* Firefox隐藏滚动条 */
+  -ms-overflow-style: none; /* IE和Edge隐藏滚动条 */
+  box-sizing: border-box; /* 确保padding不会增加宽度 */
   
-  /* Header样式 - 添加 */
-  .player-header {
-    background-color: rgba(0, 21, 41, 0.9);
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    width: 100%;
-    z-index: 1000;
-    
-    .back-button {
-      margin-right: 16px;
-    }
-    
-    .header-center {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-    }
-    
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      
-      .user-info {
-        color: white;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-    }
+  /* 为Webkit浏览器隐藏滚动条 */
+  &::-webkit-scrollbar {
+    display: none;
   }
   
   /* 视频播放区域 - 顶部 */
@@ -453,45 +428,45 @@
 
   /* 推荐内容区域 - 底部 */
   .recommended-area {
-    width: 100%;
-    background-color: #1a1a1a;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 15px 0;
+    margin-top: 16px;
+    background-color: rgba(30, 30, 30, 0.5);
+    border-radius: 8px;
+    margin-bottom: 16px;
     
     .recommended-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 20px 10px;
+      padding: 0 16px 8px; /* 减少底部内边距 */
       
       h3 {
-        font-size: 16px;
+        font-size: 15px; /* 减小标题字号 */
         margin: 0;
         color: #fff;
       }
     }
     
     .recommended-content {
-      padding: 10px 20px;
+      padding: 6px 16px 6px; /* 减少上下内边距 */
       
       .loading-container {
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 120px;
+        min-height: 100px; /* 减少最小高度 */
       }
       
       .no-recommendations {
         display: flex;
         justify-content: center;
         align-items: center;
-        min-height: 120px;
+        min-height: 100px; /* 减少最小高度 */
         color: rgba(255, 255, 255, 0.5);
       }
       
       .recommended-items {
         display: flex;
-        gap: 16px;
+        gap: 12px;
         overflow-x: auto;
         padding-bottom: 10px;
         scrollbar-width: thin;
@@ -511,8 +486,8 @@
         }
         
         .recommended-item {
-          min-width: 180px;
-          width: 180px;
+          min-width: 140px;
+          width: 140px;
           background-color: #2a2a2a;
           border: none;
           
@@ -521,7 +496,7 @@
           }
           
           .ant-card-cover {
-            height: 240px;
+            height: 180px;
             overflow: hidden;
             
             img {
@@ -532,14 +507,14 @@
           }
           
           .ant-card-body {
-            padding: 12px;
+            padding: 8px;
             background-color: #2a2a2a;
           }
           
           .ant-card-meta-title {
             color: #fff;
-            font-size: 14px;
-            margin-bottom: 4px;
+            font-size: 13px;
+            margin-bottom: 2px;
             white-space: normal;
             display: -webkit-box;
             -webkit-line-clamp: 1;
@@ -764,4 +739,16 @@ body.video-is-playing {
       margin: 1em auto !important;
     }
   }
+}
+
+/* 设置内容区域的最小高度，确保内容可以滚动 */
+.media-info-area, 
+.episodes-area, 
+.recommended-area {
+  min-height: min-content;
+}
+
+/* 确保播放器内容区域有一个最小总高度 */
+.player-content {
+  min-height: 120vh; /* 确保始终有足够空间可滚动 */
 } 

@@ -13,7 +13,10 @@ import {
   SettingOutlined,
   UserOutlined,
   LoginOutlined,
-  ReloadOutlined
+  ReloadOutlined,
+  MinusOutlined,
+  BorderOutlined,
+  CloseOutlined
 } from '@ant-design/icons';
 import { useEmbyStore } from '../stores/embyStore';
 import { useServerStore } from '../stores/serverStore'; // 添加导入
@@ -3016,47 +3019,6 @@ const Player: React.FC = () => {
   // 主要渲染函数
   return (
     <div className="player-container">
-      {/* 添加顶部Header */}
-      <div className="player-header">
-          <Button 
-            icon={<ArrowLeftOutlined />} 
-            onClick={handleBack}
-          className="back-button"
-        >
-          返回
-        </Button>
-        
-        <div className="header-center">
-          <SearchBar />
-        </div>
-        
-        <div className="header-right">
-          {/* 服务器选择下拉菜单 */}
-          <Dropdown menu={{ items: serverMenuItems.items }} trigger={['click']}>
-            <Button>
-              {activeServerId 
-                ? servers.find(s => s.id === activeServerId)?.name || '选择服务器'
-                : '选择服务器'} <DownOutlined />
-            </Button>
-          </Dropdown>
-          
-          {/* 用户信息/登录按钮 */}
-          {isLoggedIn ? (
-            <span className="user-info">
-              <UserOutlined /> {username}
-            </span>
-          ) : (
-            <Button 
-              type="primary" 
-              icon={<LoginOutlined />}
-              onClick={() => navigate('/login')}
-            >
-              登录
-            </Button>
-          )}
-        </div>
-      </div>
-
       {/* 顶部区域 - 视频播放器 */}
       <div 
         className="video-area" 

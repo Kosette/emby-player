@@ -14,7 +14,12 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        // 移除 additionalData 配置
+        // 配置Sass选项以解决遗留API警告
+        sassOptions: {
+          outputStyle: 'expanded',
+          quietDeps: true, // 禁止依赖项输出警告
+        },
+        // 不使用additionalData，让各组件自己引入变量
       },
     },
   },

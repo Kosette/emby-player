@@ -1,11 +1,10 @@
 import { jsx as _jsx, jsxs as _jsxs, Fragment as _Fragment } from "react/jsx-runtime";
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Button, Spin, message, List, Typography, Tabs, Collapse, Dropdown, Menu, Card } from 'antd';
-import { ArrowLeftOutlined, StepBackwardOutlined, StepForwardOutlined, DownOutlined, UpOutlined, SettingOutlined, UserOutlined, LoginOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Button, Spin, message, List, Typography, Tabs, Collapse, Menu, Card } from 'antd';
+import { StepBackwardOutlined, StepForwardOutlined, DownOutlined, UpOutlined, SettingOutlined, ReloadOutlined } from '@ant-design/icons';
 import { useEmbyStore } from '../stores/embyStore';
 import { useServerStore } from '../stores/serverStore'; // 添加导入
-import SearchBar from '../components/SearchBar'; // 添加导入
 import './Player.scss';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
@@ -2597,22 +2596,18 @@ const Player = () => {
     // 添加获取推荐内容的函数
     const fetchRecommendedItems = async () => {
         if (!itemInfo || !id) {
-            console.log('获取推荐内容条件不满足: itemInfo或id为空', { itemInfo, id });
             return;
         }
-        console.log('开始获取推荐内容', { itemType: itemInfo.Type, id });
         setRecommendedLoading(true);
         try {
             const apiClient = getApiClient();
             if (!apiClient) {
-                console.error('API客户端为空，无法获取推荐内容');
                 setRecommendedLoading(false);
                 return;
             }
             // 方法1: 获取同类型内容的推荐
             const itemType = itemInfo.Type || '';
             const genreIds = itemInfo.GenreItems?.map((g) => g.Id).join(',') || '';
-            console.log('构建推荐内容查询参数', { itemType, genreIds });
             // 构建请求参数 - 根据当前内容类型和流派获取相似内容
             const params = {
                 SortBy: 'Random',
@@ -2642,14 +2637,9 @@ const Player = () => {
                 // 默认获取混合内容
                 params.IncludeItemTypes = 'Movie,Series';
             }
-            console.log('发送推荐内容API请求', { params });
             const response = await apiClient.get(`/Users/${userId}/Items`, { params });
             if (response.data && response.data.Items) {
-                console.log('获取推荐内容成功', { count: response.data.Items.length });
                 setRecommendedItems(response.data.Items);
-            }
-            else {
-                console.log('获取推荐内容成功但无数据', { response: response.data });
             }
         }
         catch (error) {
@@ -2685,45 +2675,18 @@ const Player = () => {
     useEffect(() => {
         // 当ID变化时，重置推荐内容并重新获取
         if (id) {
-            console.log('ID变化，重置推荐内容状态');
             setRecommendedItems([]);
             setRecommendedLoading(false);
         }
     }, [id]);
-    // 添加一个组件挂载后的一次性执行effect
-    useEffect(() => {
-        console.log('Player组件挂载，设置5秒后强制获取推荐内容');
-        const timer = setTimeout(() => {
-            console.log('执行强制获取推荐内容');
-            try {
-                fetchRecommendedItems();
-            }
-            catch (error) {
-                console.error('强制获取推荐内容失败:', error);
-            }
-        }, 5000);
-        return () => clearTimeout(timer);
-    }, []); // 空依赖数组，只在组件挂载时执行一次
     // 主要渲染函数
-    return (_jsxs("div", { className: "player-container", children: [_jsxs("div", { className: "player-header", children: [_jsx(Button, { icon: _jsx(ArrowLeftOutlined, {}), onClick: handleBack, className: "back-button", children: "\u8FD4\u56DE" }), _jsx("div", { className: "header-center", children: _jsx(SearchBar, {}) }), _jsxs("div", { className: "header-right", children: [_jsx(Dropdown, { menu: { items: serverMenuItems.items }, trigger: ['click'], children: _jsxs(Button, { children: [activeServerId
-                                            ? servers.find(s => s.id === activeServerId)?.name || '选择服务器'
-                                            : '选择服务器', " ", _jsx(DownOutlined, {})] }) }), isLoggedIn ? (_jsxs("span", { className: "user-info", children: [_jsx(UserOutlined, {}), " ", username] })) : (_jsx(Button, { type: "primary", icon: _jsx(LoginOutlined, {}), onClick: () => navigate('/login'), children: "\u767B\u5F55" }))] })] }), _jsxs("div", { className: "video-area", ref: videoContainerRef, style: {
+    return (_jsxs("div", { className: "player-container", children: [_jsxs("div", { className: "video-area", ref: videoContainerRef, style: {
                     position: 'relative',
                     overflow: 'hidden',
                     backgroundColor: '#000',
                     width: '100%',
                     height: 'calc(100vh - 350px)', // 减去header、底部和推荐区域的高度
                     minHeight: '280px'
-                }, children: [loading && (_jsx("div", { className: "player-loading", children: _jsx(Spin, { size: "large", tip: "\u6B63\u5728\u52A0\u8F7D\u89C6\u9891..." }) })), !loading && buffering && (_jsx("div", { className: "player-loading", children: _jsx(Spin, { size: "default", tip: "\u89C6\u9891\u7F13\u51B2\u4E2D..." }) })), error && !isPlaying && (_jsxs("div", { className: "player-error", children: [_jsx("div", { className: "error-message", children: error }), _jsxs("div", { className: "error-actions", children: [_jsx(Button, { type: "primary", onClick: handleRetry, children: "\u91CD\u8BD5" }), _jsx(Button, { onClick: handleBack, children: "\u8FD4\u56DE" }), _jsx(Button, { onClick: redirectToLogin, type: "default", children: "\u91CD\u65B0\u767B\u5F55" })] })] }))] }), itemInfo && !loading && (_jsxs("div", { className: "media-info-area", children: [_jsxs("div", { className: "media-info-header", children: [_jsx("h2", { children: isEpisode && itemInfo.SeriesName ? (_jsxs(_Fragment, { children: [itemInfo.SeriesName, " - S", itemInfo.ParentIndexNumber, "E", itemInfo.IndexNumber, " ", itemInfo.Name] })) : (itemInfo.Name) }), _jsx("div", { className: "header-controls", children: _jsxs("button", { className: `toggle-info-btn ${infoCollapsed ? 'collapsed' : ''}`, onClick: toggleInfoPanel, children: [infoCollapsed ? '展开' : '收起', " ", _jsx("span", { className: "arrow-icon", children: infoCollapsed ? _jsx(DownOutlined, {}) : _jsx(UpOutlined, {}) })] }) })] }), _jsxs("div", { className: `media-info-content ${infoCollapsed ? 'collapsed' : ''}`, children: [itemInfo.Overview && (_jsxs(_Fragment, { children: [_jsx("h3", { children: "\u7B80\u4ECB" }), _jsx(Paragraph, { ellipsis: { rows: 3, expandable: true, symbol: '展开' }, children: itemInfo.Overview })] })), itemInfo.RunTimeTicks && (_jsxs("p", { children: ["\u65F6\u957F: ", formatRuntime(itemInfo.RunTimeTicks)] })), _jsx(Button, { type: "primary", onClick: () => {
-                                    console.log('测试按钮被点击');
-                                    console.log('itemInfo:', itemInfo);
-                                    console.log('id:', id);
-                                    fetchRecommendedItems();
-                                }, style: { marginTop: '10px' }, children: "\u6D4B\u8BD5\u52A0\u8F7D\u63A8\u8350" })] })] })), isEpisode && episodesList.length > 0 && (_jsxs("div", { className: "episodes-area", children: [_jsxs("div", { className: "episodes-header", children: [_jsx("h3", { children: "\u5267\u96C6\u9009\u62E9" }), _jsxs("div", { className: "episode-controls", children: [_jsx(Button, { icon: _jsx(StepBackwardOutlined, {}), onClick: playPreviousEpisode, disabled: !currentEpisode || episodesList.findIndex(ep => ep.Id === currentEpisode.Id) <= 0, type: "text" }), _jsx(Button, { icon: _jsx(StepForwardOutlined, {}), onClick: playNextEpisode, disabled: !currentEpisode || episodesList.findIndex(ep => ep.Id === currentEpisode.Id) >= episodesList.length - 1, type: "text" })] })] }), _jsx("div", { className: "episodes-list", children: episodesLoading ? (_jsx(Spin, { size: "small" })) : (episodesList.map((episode, index) => (_jsxs("div", { className: `episode-item ${currentEpisode && episode.Id === currentEpisode.Id ? 'active' : ''}`, onClick: () => switchToEpisode(episode), title: `${episode.Name} - ${formatRuntime(episode.RunTimeTicks)}`, children: [_jsxs("div", { className: "episode-number", children: ["\u7B2C", episode.IndexNumber, "\u96C6"] }), _jsx("div", { className: "episode-title", children: episode.Name })] }, episode.Id)))) })] })), _jsxs("div", { className: "recommended-area", style: { border: '1px solid red' }, children: [_jsxs("div", { className: "recommended-header", children: [_jsx("h3", { children: "\u731C\u4F60\u559C\u6B22" }), _jsx(Button, { type: "text", onClick: () => {
-                                    console.log('点击了刷新推荐按钮');
-                                    console.log('当前itemInfo:', itemInfo);
-                                    console.log('当前ID:', id);
-                                    fetchRecommendedItems();
-                                }, size: "small", icon: _jsx(ReloadOutlined, {}), children: "\u5237\u65B0\u63A8\u8350" })] }), _jsx("div", { className: "recommended-content", children: recommendedLoading ? (_jsx("div", { className: "loading-container", children: _jsx(Spin, { size: "default", tip: "\u52A0\u8F7D\u63A8\u8350\u5185\u5BB9..." }) })) : recommendedItems.length > 0 ? (_jsx("div", { className: "recommended-items", children: recommendedItems.map(item => (_jsx(Card, { hoverable: true, className: "recommended-item", cover: _jsx("img", { alt: item.Name, src: getRecommendedImageUrl(item) }), onClick: () => handleRecommendedItemClick(item), children: _jsx(Card.Meta, { title: item.Name, description: _jsx("div", { className: "recommended-item-info", children: _jsxs("div", { children: [item.Type === 'Movie' ? '电影' : '剧集', " ", item.ProductionYear && `· ${item.ProductionYear}`] }) }) }) }, item.Id))) })) : (_jsx("div", { className: "no-recommendations", children: "\u6682\u65E0\u63A8\u8350\u5185\u5BB9\uFF08\u8C03\u8BD5\u6A21\u5F0F\uFF09" })) })] }), renderBufferStats()] }));
+                }, children: [loading && (_jsx("div", { className: "player-loading", children: _jsx(Spin, { size: "large", tip: "\u6B63\u5728\u52A0\u8F7D\u89C6\u9891..." }) })), !loading && buffering && (_jsx("div", { className: "player-loading", children: _jsx(Spin, { size: "default", tip: "\u89C6\u9891\u7F13\u51B2\u4E2D..." }) })), error && !isPlaying && (_jsxs("div", { className: "player-error", children: [_jsx("div", { className: "error-message", children: error }), _jsxs("div", { className: "error-actions", children: [_jsx(Button, { type: "primary", onClick: handleRetry, children: "\u91CD\u8BD5" }), _jsx(Button, { onClick: handleBack, children: "\u8FD4\u56DE" }), _jsx(Button, { onClick: redirectToLogin, type: "default", children: "\u91CD\u65B0\u767B\u5F55" })] })] }))] }), itemInfo && !loading && (_jsxs("div", { className: "media-info-area", children: [_jsxs("div", { className: "media-info-header", children: [_jsx("h2", { children: isEpisode && itemInfo.SeriesName ? (_jsxs(_Fragment, { children: [itemInfo.SeriesName, " - S", itemInfo.ParentIndexNumber, "E", itemInfo.IndexNumber, " ", itemInfo.Name] })) : (itemInfo.Name) }), _jsx("div", { className: "header-controls", children: _jsxs("button", { className: `toggle-info-btn ${infoCollapsed ? 'collapsed' : ''}`, onClick: toggleInfoPanel, children: [infoCollapsed ? '展开' : '收起', " ", _jsx("span", { className: "arrow-icon", children: infoCollapsed ? _jsx(DownOutlined, {}) : _jsx(UpOutlined, {}) })] }) })] }), _jsxs("div", { className: `media-info-content ${infoCollapsed ? 'collapsed' : ''}`, children: [itemInfo.Overview && (_jsxs(_Fragment, { children: [_jsx("h3", { children: "\u7B80\u4ECB" }), _jsx(Paragraph, { ellipsis: { rows: 3, expandable: true, symbol: '展开' }, children: itemInfo.Overview })] })), itemInfo.RunTimeTicks && (_jsxs("p", { children: ["\u65F6\u957F: ", formatRuntime(itemInfo.RunTimeTicks)] }))] })] })), isEpisode && episodesList.length > 0 && (_jsxs("div", { className: "episodes-area", children: [_jsxs("div", { className: "episodes-header", children: [_jsx("h3", { children: "\u5267\u96C6\u9009\u62E9" }), _jsxs("div", { className: "episode-controls", children: [_jsx(Button, { icon: _jsx(StepBackwardOutlined, {}), onClick: playPreviousEpisode, disabled: !currentEpisode || episodesList.findIndex(ep => ep.Id === currentEpisode.Id) <= 0, type: "text" }), _jsx(Button, { icon: _jsx(StepForwardOutlined, {}), onClick: playNextEpisode, disabled: !currentEpisode || episodesList.findIndex(ep => ep.Id === currentEpisode.Id) >= episodesList.length - 1, type: "text" })] })] }), _jsx("div", { className: "episodes-list", children: episodesLoading ? (_jsx(Spin, { size: "small" })) : (episodesList.map((episode, index) => (_jsxs("div", { className: `episode-item ${currentEpisode && episode.Id === currentEpisode.Id ? 'active' : ''}`, onClick: () => switchToEpisode(episode), title: `${episode.Name} - ${formatRuntime(episode.RunTimeTicks)}`, children: [_jsxs("div", { className: "episode-number", children: ["\u7B2C", episode.IndexNumber, "\u96C6"] }), _jsx("div", { className: "episode-title", children: episode.Name })] }, episode.Id)))) })] })), itemInfo && (_jsxs("div", { className: "recommended-area", children: [_jsxs("div", { className: "recommended-header", children: [_jsx("h3", { children: "\u731C\u4F60\u559C\u6B22" }), _jsx(Button, { type: "text", onClick: fetchRecommendedItems, size: "small", icon: _jsx(ReloadOutlined, {}), children: "\u5237\u65B0\u63A8\u8350" })] }), _jsx("div", { className: "recommended-content", children: recommendedLoading ? (_jsx("div", { className: "loading-container", children: _jsx(Spin, { size: "default", tip: "\u52A0\u8F7D\u63A8\u8350\u5185\u5BB9..." }) })) : recommendedItems.length > 0 ? (_jsx("div", { className: "recommended-items", children: recommendedItems.map(item => (_jsx(Card, { hoverable: true, className: "recommended-item", cover: _jsx("img", { alt: item.Name, src: getRecommendedImageUrl(item) }), onClick: () => handleRecommendedItemClick(item), children: _jsx(Card.Meta, { title: item.Name, description: _jsx("div", { className: "recommended-item-info", children: _jsxs("div", { children: [item.Type === 'Movie' ? '电影' : '剧集', " ", item.ProductionYear && `· ${item.ProductionYear}`] }) }) }) }, item.Id))) })) : (_jsx("div", { className: "no-recommendations", children: "\u6682\u65E0\u63A8\u8350\u5185\u5BB9\uFF08\u8C03\u8BD5\u6A21\u5F0F\uFF09" })) })] })), renderBufferStats()] }));
 };
 export default Player;

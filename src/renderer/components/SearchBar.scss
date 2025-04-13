@@ -3,12 +3,14 @@
 .search-container {
   width: 100%;
   max-width: 500px;
+  margin: 0 auto; /* 确保居中 */
   
   .ant-input-affix-wrapper {
     background-color: rgba(255, 255, 255, 0.08) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 4px;
     transition: all 0.3s;
+    width: 100%; /* 确保宽度充满容器 */
     
     &:hover, &:focus, &-focused {
       border-color: #1890ff !important;

@@ -3,8 +3,10 @@ import path from 'path';
 let mainWindow = null;
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 1200,
+        width: 1280,
         height: 800,
+        minWidth: 960,
+        minHeight: 600,
         frame: false,
         backgroundColor: 'rgba(20, 20, 20, 0.9)',
         icon: path.join(__dirname, '../assets/emby_icon_512x512.png'),

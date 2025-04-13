@@ -2,7 +2,7 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useState, useEffect } from 'react';
 import { Layout as AntLayout, Menu, Button, Dropdown, Modal, Form, Input, message } from 'antd';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { HomeOutlined, PlayCircleOutlined, HistoryOutlined, SettingOutlined, LogoutOutlined, ArrowLeftOutlined, VideoCameraOutlined, AppstoreOutlined, UserOutlined, DownOutlined, LoginOutlined, FolderOpenOutlined, MinusOutlined, CloseOutlined, BorderOutlined, } from '@ant-design/icons';
+import { HomeOutlined, PlayCircleOutlined, HistoryOutlined, SettingOutlined, LogoutOutlined, VideoCameraOutlined, AppstoreOutlined, UserOutlined, DownOutlined, LoginOutlined, FolderOpenOutlined, } from '@ant-design/icons';
 import { useEmbyStore } from '../stores/embyStore';
 import { useServerStore } from '../stores/serverStore';
 import { useMediaLibraryStore } from '../stores/mediaLibraryStore';
@@ -208,22 +208,12 @@ const Layout = () => {
         });
     }
     const isPlayerPage = location.pathname.startsWith('/player/');
-    // 添加窗口控制函数
-    const handleMinimize = () => {
-        window.electron?.minimize();
-    };
-    const handleMaximize = () => {
-        window.electron?.maximize();
-    };
-    const handleClose = () => {
-        window.electron?.close();
-    };
     return (_jsxs(AntLayout, { className: "main-layout", children: [_jsxs(Sider, { collapsible: true, collapsedWidth: 0, breakpoint: "md", className: "main-sider", children: [_jsxs("div", { className: "logo", children: [_jsx("div", { className: "app-icon", children: _jsx("span", { className: "icon-inner", children: "E" }) }), _jsx("span", { className: "app-name", children: "Emby\u64AD\u653E\u5668" })] }), _jsx(Menu, { theme: "dark", mode: "inline", selectedKeys: [location.pathname], onClick: ({ key }) => handleMenuClick(key.toString()), items: menuItems, className: "main-menu" }), isLoggedIn && libraries.length > 0 && (_jsxs("div", { className: "libraries-section", children: [_jsx("div", { className: "section-title", children: "\u5A92\u4F53\u5E93" }), _jsx(Menu, { theme: "dark", mode: "inline", selectedKeys: [location.pathname], onClick: ({ key }) => handleMenuClick(key.toString()), items: libraries.map(library => ({
                                     key: `/library/${library.Id}`,
                                     icon: _jsx(FolderOpenOutlined, {}),
                                     label: library.Name,
-                                })), className: "library-menu" })] }))] }), _jsxs(AntLayout, { children: [_jsxs(Header, { className: `main-header ${isPlayerPage ? 'player-header' : ''}`, children: [isPlayerPage && (_jsx(Button, { icon: _jsx(ArrowLeftOutlined, {}), onClick: () => navigate(-1), className: "back-button", children: "\u8FD4\u56DE" })), _jsx("div", { className: "header-center", children: !isPlayerPage && _jsx(SearchBar, {}) }), _jsxs("div", { className: "header-right", children: [_jsx(Dropdown, { menu: { items: serverMenuItems, selectedKeys: [activeServerId || ''] }, trigger: ['click'], children: _jsxs(Button, { children: [activeServerId
+                                })), className: "library-menu" })] }))] }), _jsxs(AntLayout, { children: [_jsxs(Header, { className: "main-header", children: [_jsx("div", { className: "header-center", children: _jsx(SearchBar, {}) }), _jsxs("div", { className: "header-right", children: [_jsx(Dropdown, { menu: { items: serverMenuItems, selectedKeys: [activeServerId || ''] }, trigger: ['click'], children: _jsxs(Button, { children: [activeServerId
                                                     ? servers.find(s => s.id === activeServerId)?.name || '选择服务器'
-                                                    : '选择服务器', " ", _jsx(DownOutlined, {})] }) }), isLoggedIn ? (_jsxs("span", { className: "user-info", children: [_jsx(UserOutlined, {}), " ", username] })) : (_jsx(Button, { type: "primary", icon: _jsx(LoginOutlined, {}), onClick: showLoginModal, children: "\u767B\u5F55" })), _jsxs("div", { className: "window-controls", children: [_jsx(Button, { type: "text", icon: _jsx(MinusOutlined, {}), onClick: handleMinimize }), _jsx(Button, { type: "text", icon: _jsx(BorderOutlined, {}), onClick: handleMaximize }), _jsx(Button, { type: "text", danger: true, icon: _jsx(CloseOutlined, {}), onClick: handleClose })] })] })] }), _jsx(Content, { className: `main-content ${isPlayerPage ? 'player-content' : ''}`, children: _jsx(Outlet, {}) })] }), _jsx(Modal, { title: "\u767B\u5F55\u5230Emby\u670D\u52A1\u5668", open: loginModalVisible, onOk: handleLogin, onCancel: () => setLoginModalVisible(false), confirmLoading: isLoggingIn, destroyOnClose: true, children: _jsxs(Form, { form: loginForm, layout: "vertical", requiredMark: false, children: [_jsx(Form.Item, { name: "username", label: "\u7528\u6237\u540D", rules: [{ required: true, message: '请输入用户名' }], children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165\u7528\u6237\u540D" }) }), _jsx(Form.Item, { name: "password", label: "\u5BC6\u7801", rules: [{ required: true, message: '请输入密码' }], children: _jsx(Input.Password, { placeholder: "\u8BF7\u8F93\u5165\u5BC6\u7801" }) })] }) })] }));
+                                                    : '选择服务器', " ", _jsx(DownOutlined, {})] }) }), isLoggedIn ? (_jsxs("span", { className: "user-info", children: [_jsx(UserOutlined, {}), " ", username] })) : (_jsx(Button, { type: "primary", icon: _jsx(LoginOutlined, {}), onClick: showLoginModal, children: "\u767B\u5F55" }))] })] }), _jsx(Content, { className: `main-content ${isPlayerPage ? 'player-content' : ''}`, children: _jsx(Outlet, {}) })] }), _jsx(Modal, { title: "\u767B\u5F55\u5230Emby\u670D\u52A1\u5668", open: loginModalVisible, onOk: handleLogin, onCancel: () => setLoginModalVisible(false), confirmLoading: isLoggingIn, destroyOnClose: true, children: _jsxs(Form, { form: loginForm, layout: "vertical", requiredMark: false, children: [_jsx(Form.Item, { name: "username", label: "\u7528\u6237\u540D", rules: [{ required: true, message: '请输入用户名' }], children: _jsx(Input, { placeholder: "\u8BF7\u8F93\u5165\u7528\u6237\u540D" }) }), _jsx(Form.Item, { name: "password", label: "\u5BC6\u7801", rules: [{ required: true, message: '请输入密码' }], children: _jsx(Input.Password, { placeholder: "\u8BF7\u8F93\u5165\u5BC6\u7801" }) })] }) })] }));
 };
 export default Layout;
