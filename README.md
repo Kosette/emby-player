@@ -19,10 +19,10 @@ A lightweight, fast desktop client for Emby media server, built with Electron an
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/emby-desktop-player.git
+git clone https://github.com/CodeCrafter-bit/empy-player.git
 
 # Navigate to project directory
-cd emby-desktop-player
+cd empy-player
 
 # Install dependencies
 npm install
@@ -65,16 +65,19 @@ npm run electron:build
 
 ```bash
 # 克隆仓库
-git clone https://github.com/yourusername/emby-desktop-player.git
+git clone https://github.com/CodeCrafter-bit/empy-player.git
 
 # 进入项目目录
-cd emby-desktop-player
+cd empy-player
 
 # 安装依赖
 npm install
 
 # 以开发模式启动应用
 npm run electron:dev
+
+#开发这模式运行，需要启动开发者工具
+npm run dev
 ```
 
 ### 🛠️ 从源码构建
@@ -93,6 +96,12 @@ npm run electron:build
 - Ant Design
 - HLS.js
 - VideoJS
+
+## ⚠️ 免责声明 / Disclaimer
+
+**中文**：本项目仅供学习和研究使用，不得用于商业目的。使用本软件产生的任何法律责任由使用者自行承担。
+
+**English**: This project is for learning and research purposes only and may not be used for commercial purposes. Any legal liability arising from the use of this software shall be borne by the user.
 
 ## 📝 License / 许可证
 
