@@ -1,0 +1,98 @@
+@use '../styles/variables' as *;
+
+.search-container {
+  width: 100%;
+  max-width: 500px;
+  
+  .ant-input-affix-wrapper {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 4px;
+    transition: all 0.3s;
+    
+    &:hover, &:focus, &-focused {
+      border-color: #1890ff !important;
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1) !important;
+    }
+    
+    .ant-input {
+      background-color: transparent !important;
+      color: rgba(255, 255, 255, 0.85) !important;
+      
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+      }
+    }
+    
+    .ant-input-prefix, .ant-input-suffix {
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  position: relative;
+  
+  .ant-avatar {
+    flex-shrink: 0;
+    margin-right: 12px;
+    background-color: #2a2a2a;
+    overflow: hidden;
+  }
+  
+  .search-item-details {
+    flex: 1;
+    min-width: 0;
+    padding-right: 24px; // 为播放图标留出空间
+    
+    .search-item-title {
+      color: $text-color;
+      font-weight: 500;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+    
+    .search-item-subtitle {
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  
+  .search-item-play {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+    opacity: 0;
+    transition: all 0.2s ease;
+  }
+  
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    
+    .search-item-play {
+      opacity: 1;
+      color: $primary-color;
+    }
+  }
+}
+
+.search-item-error {
+  padding: 8px 12px;
+  color: #ff4d4f;
+  font-size: 13px;
+  text-align: center;
+} 

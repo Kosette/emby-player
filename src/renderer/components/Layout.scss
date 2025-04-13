@@ -1,0 +1,222 @@
+@use '../styles/variables' as *;
+
+.main-layout {
+  min-height: 100vh;
+  
+  .main-sider {
+    overflow: auto;
+    height: 100vh;
+    background-color: #202124;
+    
+    .logo {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: #fff;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 14px;
+      
+      .app-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1890ff 0%, #0050b3 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 6px;
+        box-shadow: 0 0 15px rgba(24, 144, 255, 0.4);
+        position: relative;
+        overflow: hidden;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+          border-radius: 50%;
+        }
+        
+        .icon-inner {
+          color: white;
+          font-size: 22px;
+          font-weight: bold;
+          z-index: 2;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+      }
+      
+      .app-name {
+        font-size: 14px;
+        font-weight: 500;
+        opacity: 0.9;
+        letter-spacing: 0.5px;
+        background: linear-gradient(90deg, #ffffff, #e6f7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 10px rgba(24, 144, 255, 0.3);
+      }
+      
+      img {
+        height: 40px;
+        width: 40px;
+        object-fit: contain;
+        opacity: 0.8;
+        filter: brightness(1.2) drop-shadow(0 0 8px rgba(24, 144, 255, 0.3));
+        transition: all 0.3s ease;
+        
+        &:hover {
+          opacity: 1;
+          filter: brightness(1.4) drop-shadow(0 0 12px rgba(24, 144, 255, 0.5));
+        }
+      }
+    }
+    
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(24, 144, 255, 0.3);
+    }
+    
+    .main-menu, .library-menu {
+      background-color: #202124 !important;
+      border-right: none;
+      
+      .ant-menu-item {
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0;
+        transition: all 0.2s;
+        border-radius: 0;
+        border-left: 3px solid transparent;
+        
+        &:hover {
+          color: #1890ff !important;
+          background-color: rgba(24, 144, 255, 0.08) !important;
+        }
+        
+        &.ant-menu-item-selected {
+          color: #1890ff !important;
+          background-color: rgba(24, 144, 255, 0.1) !important;
+          border-left: 3px solid #1890ff;
+        }
+      }
+    }
+    
+    .libraries-section {
+      margin-top: 16px;
+      
+      .section-title {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 12px;
+        padding: 8px 16px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+    }
+  }
+  
+  .main-header {
+    background-color: #202124;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    -webkit-app-region: drag;
+    height: 64px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    
+    &.player-header {
+      background-color: rgba(32, 33, 36, 0.8);
+      position: absolute;
+      width: 100%;
+      z-index: 100;
+    }
+    
+    .back-button {
+      margin-right: 16px;
+      -webkit-app-region: no-drag;
+    }
+    
+    .header-center {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      
+      * {
+        -webkit-app-region: no-drag;
+      }
+    }
+    
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      
+      * {
+        -webkit-app-region: no-drag;
+      }
+      
+      .user-info {
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      
+      .window-controls {
+        display: flex;
+        gap: 8px;
+        margin-left: 8px;
+        
+        button {
+          color: rgba(255, 255, 255, 0.65);
+          height: 32px;
+          width: 32px;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s;
+          
+          &:hover {
+            color: white;
+          }
+        }
+      }
+    }
+  }
+  
+  .main-content {
+    padding: 24px;
+    background-color: #141414;
+    
+    &.player-content {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  
+  .selected-server {
+    font-weight: bold;
+    color: #1890ff;
+  }
+} 
