@@ -455,10 +455,8 @@
   .recommended-area {
     width: 100%;
     background-color: #1a1a1a;
-    border-top: 2px solid #ff4d4f !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px 0;
-    margin-top: 10px;
-    margin-bottom: 10px;
     
     .recommended-header {
       display: flex;
@@ -469,7 +467,7 @@
       h3 {
         font-size: 16px;
         margin: 0;
-        color: #ff4d4f !important;
+        color: #fff;
       }
     }
     

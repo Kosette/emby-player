@@ -2923,16 +2923,13 @@ const Player: React.FC = () => {
   // 添加获取推荐内容的函数
   const fetchRecommendedItems = async () => {
     if (!itemInfo || !id) {
-      console.log('获取推荐内容条件不满足: itemInfo或id为空', { itemInfo, id });
       return;
     }
     
-    console.log('开始获取推荐内容', { itemType: itemInfo.Type, id });
     setRecommendedLoading(true);
     try {
       const apiClient = getApiClient();
       if (!apiClient) {
-        console.error('API客户端为空，无法获取推荐内容');
         setRecommendedLoading(false);
         return;
       }
@@ -2940,8 +2937,6 @@ const Player: React.FC = () => {
       // 方法1: 获取同类型内容的推荐
       const itemType = itemInfo.Type || '';
       const genreIds = itemInfo.GenreItems?.map((g: any) => g.Id).join(',') || '';
-      
-      console.log('构建推荐内容查询参数', { itemType, genreIds });
       
       // 构建请求参数 - 根据当前内容类型和流派获取相似内容
       const params: any = {
@@ -2973,14 +2968,10 @@ const Player: React.FC = () => {
         params.IncludeItemTypes = 'Movie,Series';
       }
       
-      console.log('发送推荐内容API请求', { params });
       const response = await apiClient.get(`/Users/${userId}/Items`, { params });
       
       if (response.data && response.data.Items) {
-        console.log('获取推荐内容成功', { count: response.data.Items.length });
         setRecommendedItems(response.data.Items);
-      } else {
-        console.log('获取推荐内容成功但无数据', { response: response.data });
       }
     } catch (error) {
       console.error('获取推荐内容失败:', error);
@@ -3017,27 +3008,11 @@ const Player: React.FC = () => {
   useEffect(() => {
     // 当ID变化时，重置推荐内容并重新获取
     if (id) {
-      console.log('ID变化，重置推荐内容状态');
       setRecommendedItems([]);
       setRecommendedLoading(false);
     }
   }, [id]);
   
-  // 添加一个组件挂载后的一次性执行effect
-  useEffect(() => {
-    console.log('Player组件挂载，设置5秒后强制获取推荐内容');
-    const timer = setTimeout(() => {
-      console.log('执行强制获取推荐内容');
-      try {
-        fetchRecommendedItems();
-      } catch (error) {
-        console.error('强制获取推荐内容失败:', error);
-      }
-    }, 5000);
-    
-    return () => clearTimeout(timer);
-  }, []); // 空依赖数组，只在组件挂载时执行一次
-
   // 主要渲染函数
   return (
     <div className="player-container">
@@ -3158,20 +3133,6 @@ const Player: React.FC = () => {
             {itemInfo.RunTimeTicks && (
               <p>时长: {formatRuntime(itemInfo.RunTimeTicks)}</p>
             )}
-            
-            {/* 添加测试按钮 */}
-            <Button 
-              type="primary" 
-              onClick={() => {
-                console.log('测试按钮被点击');
-                console.log('itemInfo:', itemInfo);
-                console.log('id:', id);
-                fetchRecommendedItems();
-              }}
-              style={{ marginTop: '10px' }}
-            >
-              测试加载推荐
-            </Button>
                 </div>
       </div>
       )}
@@ -3217,58 +3178,55 @@ const Player: React.FC = () => {
         </div>
       )}
       
-      {/* 新增: 底部区域 - 推荐内容，移除条件渲染以便于调试 */}
-      <div className="recommended-area" style={{border: '1px solid red'}}>
-        <div className="recommended-header">
-          <h3>猜你喜欢</h3>
-          <Button 
-            type="text" 
-            onClick={() => {
-              console.log('点击了刷新推荐按钮');
-              console.log('当前itemInfo:', itemInfo);
-              console.log('当前ID:', id);
-              fetchRecommendedItems();
-            }}
-            size="small"
-            icon={<ReloadOutlined />}
-          >
-            刷新推荐
-          </Button>
+      {/* 新增: 底部区域 - 推荐内容 */}
+      {itemInfo && (
+        <div className="recommended-area">
+          <div className="recommended-header">
+            <h3>猜你喜欢</h3>
+            <Button 
+              type="text" 
+              onClick={fetchRecommendedItems}
+              size="small"
+              icon={<ReloadOutlined />}
+            >
+              刷新推荐
+            </Button>
+          </div>
+          
+          <div className="recommended-content">
+            {recommendedLoading ? (
+              <div className="loading-container">
+                <Spin size="default" tip="加载推荐内容..." />
+              </div>
+            ) : recommendedItems.length > 0 ? (
+              <div className="recommended-items">
+                {recommendedItems.map(item => (
+                  <Card
+                    key={item.Id}
+                    hoverable
+                    className="recommended-item"
+                    cover={<img alt={item.Name} src={getRecommendedImageUrl(item)} />}
+                    onClick={() => handleRecommendedItemClick(item)}
+                  >
+                    <Card.Meta 
+                      title={item.Name} 
+                      description={
+                        <div className="recommended-item-info">
+                          <div>{item.Type === 'Movie' ? '电影' : '剧集'} {item.ProductionYear && `· ${item.ProductionYear}`}</div>
+                        </div>
+                      } 
+                    />
+                  </Card>
+                ))}
+              </div>
+            ) : (
+              <div className="no-recommendations">
+                暂无推荐内容（调试模式）
+              </div>
+            )}
+          </div>
         </div>
-        
-        <div className="recommended-content">
-          {recommendedLoading ? (
-            <div className="loading-container">
-              <Spin size="default" tip="加载推荐内容..." />
-            </div>
-          ) : recommendedItems.length > 0 ? (
-            <div className="recommended-items">
-              {recommendedItems.map(item => (
-                <Card
-                  key={item.Id}
-                  hoverable
-                  className="recommended-item"
-                  cover={<img alt={item.Name} src={getRecommendedImageUrl(item)} />}
-                  onClick={() => handleRecommendedItemClick(item)}
-                >
-                  <Card.Meta 
-                    title={item.Name} 
-                    description={
-                      <div className="recommended-item-info">
-                        <div>{item.Type === 'Movie' ? '电影' : '剧集'} {item.ProductionYear && `· ${item.ProductionYear}`}</div>
-                      </div>
-                    } 
-                  />
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="no-recommendations">
-              暂无推荐内容（调试模式）
-            </div>
-          )}
-        </div>
-      </div>
+      )}
 
       {/* 添加缓冲统计 */}
       {renderBufferStats()}
