@@ -15,6 +15,12 @@ A lightweight, fast desktop client for Emby media server, built with Electron an
 - Modern and intuitive user interface
 - Customizable player settings
 
+### 🖼️ Preview
+
+![Home Page](docs/images/首页.png)
+![Video Player](docs/images/视频播放页.png)
+![Server Settings](docs/images/设置服务器.png)
+
 ### 🚀 Installation
 
 ```bash
@@ -60,6 +66,12 @@ npm run electron:build
 - 支持 HLS 流媒体
 - 现代直观的用户界面
 - 可自定义的播放器设置
+
+### 🖼️ 界面预览
+
+![首页](docs/images/首页.png)
+![视频播放页](docs/images/视频播放页.png)
+![设置服务器](docs/images/设置服务器.png)
 
 ### 🚀 安装方法
 
