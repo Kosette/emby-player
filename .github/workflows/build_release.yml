@@ -1,0 +1,37 @@
+name: Build Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_release:
+    name: build windows release
+    runs-on: windows-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install dependecies
+        run: |
+          npm install
+      
+      - name: Build electron App
+        env: 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npm run electron:build:win
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: emby-player-windows-amd64
+          path: |
+            dist_electron/*.exe
+          compression-level: 0
+          retention-days: 3
+          if-no-files-found: error
